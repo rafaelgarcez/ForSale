@@ -31,10 +31,15 @@
       flex-wrap: wrap;
       margin-top: 10px;
     }
-    .fotos img {
+    .fotos a img {
       max-width: 150px;
       border-radius: 8px;
       border: 1px solid #ccc;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .fotos a img:hover {
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -54,18 +59,22 @@
       lista.innerHTML = "";
       data.forEach(item => {
         let fotos = "";
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 7; i++) {
           const link = item[`Foto${i}`];
           if (link) {
-            fotos += `<img src="${link}" alt="Foto ${i} de ${item.Nome}">`;
+            fotos += `
+              <a href="${link}" target="_blank" rel="noopener noreferrer">
+                <img src="${link}" alt="Foto ${i} de ${item.Nome}">
+              </a>
+            `;
           }
         }
 
         lista.innerHTML += `
           <div class="item">
             <h2>${item.Nome}</h2>
-            <p>${item.Descrição}</p>
             <p><strong>Preço:</strong> R$ ${item.Preço}</p>
+            <p>${item.Descrição}</p>
             <div class="fotos">${fotos}</div>
           </div>
         `;
