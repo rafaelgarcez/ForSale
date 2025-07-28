@@ -2,80 +2,58 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Meus Itens à Venda</title>
+  <title>Meus Gibis à Venda</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 900px;
+      background: #f9f9f9;
+      color: #333;
+      max-width: 800px;
       margin: auto;
       padding: 20px;
-      background: #f5f5f5;
     }
     h1 {
       text-align: center;
-      color: #d35400;
+      color: #e74c3c;
     }
     .item {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-      padding: 20px;
-    }
-    .item h2 {
-      margin-top: 0;
-    }
-    .fotos {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-    .fotos img {
-      max-width: 150px;
-      border-radius: 8px;
       border: 1px solid #ccc;
+      border-radius: 10px;
+      margin: 15px 0;
+      padding: 10px;
+      background: #fff;
+    }
+    .item img {
+      max-width: 150px;
+      float: left;
+      margin-right: 20px;
+    }
+    .item::after {
+      content: "";
+      display: table;
+      clear: both;
     }
   </style>
 </head>
 <body>
+  <h1>Gibis à Venda</h1>
 
-<h1>🛒 Itens à Venda</h1>
-<div id="lista">Carregando...</div>
+  <div class="item">
+    <img src="https://static.wikia.nocookie.net/monica/images/5/59/Adssaod55asdsa.png/revision/latest?cb=20131115005205&path-prefix=pt-br" alt="Gibi Exemplo">
+    <h2>Turma da Mônica #101</h2>
+    <p>Estado: Bom</p>
+    <p>Preço: R$ 10,00</p>
+    <p>Entre em contato pelo WhatsApp: (xx) xxxxx-xxxx</p>
+  </div>
 
-<script>
-  const planilhaID = "2PACX-1vTZLhP2qf0eWA_TS9huNChcj2DTKhhLG7qSUbxYDXK6TtJDm1DFV5Jcaskx89L-WQvSJfoIktAWaCl_";
-  const url = `https://opensheet.elk.sh/${planilhaID}/1`;
-
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      const lista = document.getElementById("lista");
-      lista.innerHTML = "";
-      data.forEach(item => {
-        let fotos = "";
-        for (let i = 1; i <= 5; i++) {
-          const link = item[`Foto${i}`];
-          if (link) {
-            fotos += `<img src="${link}" alt="Foto ${i} de ${item.Nome}">`;
-          }
-        }
-
-        lista.innerHTML += `
-          <div class="item">
-            <h2>${item.Nome}</h2>
-            <p><strong>Preço:</strong> R$ ${item.Preço}</p>
-            <p>${item.Descrição}</p>
-            <div class="fotos">${fotos}</div>
-          </div>
-        `;
-      });
-    })
-    .catch(err => {
-      document.getElementById("lista").innerText = "Erro ao carregar os dados.";
-      console.error(err);
-    });
-</script>
+  <div class="item">
+    <img src="https://static.wikia.nocookie.net/monica/images/5/59/Adssaod55asdsa.png/revision/latest?cb=20131115005205&path-prefix=pt-br" alt="Gibi Exemplo">
+    <img src="https://static.wikia.nocookie.net/monica/images/5/59/Adssaod55asdsa.png/revision/latest?cb=20131115005205&path-prefix=pt-br" alt="Gibi Exemplo">
+    <h2>Homem-Aranha #12</h2>
+    <p>Estado: Ótimo</p>
+    <p>Preço: R$ 25,00</p>
+    <p>Contato: @seuInstagram</p>
+  </div>
 
 </body>
 </html>
