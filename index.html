@@ -2,93 +2,80 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Gibis à Venda</title>
+  <title>Meus Itens à Venda</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #333;
       max-width: 900px;
       margin: auto;
       padding: 20px;
+      background: #f5f5f5;
     }
     h1 {
       text-align: center;
       color: #d35400;
     }
-    .gibi {
+    .item {
       background: white;
-      border-radius: 12px;
+      border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
+      margin-bottom: 30px;
+      padding: 20px;
     }
-    .gibi img {
-      width: 180px;
-      object-fit: cover;
-      border-right: 1px solid #eee;
-    }
-    .info {
-      padding: 15px;
-      flex: 1;
-    }
-    .info h2 {
+    .item h2 {
       margin-top: 0;
-      color: #2c3e50;
     }
-    .info p {
-      margin: 8px 0;
+    .fotos {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
     }
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #777;
+    .fotos img {
+      max-width: 150px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
 
-  <h1>🧾 Gibis à Venda</h1>
+<h1>🛒 Itens à Venda</h1>
+<div id="lista">Carregando...</div>
 
-  <div class="gibi">
-    <img src="https://upload.wikimedia.org/wikipedia/pt/0/0b/CapaTurmaDaMonica1.jpg" alt="Turma da Mônica #1">
-    <div class="info">
-      <h2>Turma da Mônica #1 (1990)</h2>
-      <p><strong>Estado:</strong> Bom</p>
-      <p><strong>Preço:</strong> R$ 15,00</p>
-      <p><strong>Descrição:</strong> Clássico da coleção. Leves marcas do tempo, mas completo e bem conservado.</p>
-      <p><strong>Contato:</strong> WhatsApp (11) 99999-9999</p>
-    </div>
-  </div>
+<script>
+  const planilhaID = "2PACX-1vTZLhP2qf0eWA_TS9huNChcj2DTKhhLG7qSUbxYDXK6TtJDm1DFV5Jcaskx89L-WQvSJfoIktAWaCl_";
+  const url = `https://opensheet.elk.sh/${planilhaID}/1`;
 
-  <div class="gibi">
-    <img src="https://upload.wikimedia.org/wikipedia/pt/3/3c/Homem_Aranha_1.jpg" alt="Homem-Aranha #1">
-    <div class="info">
-      <h2>Homem-Aranha #1 (Abril)</h2>
-      <p><strong>Estado:</strong> Excelente</p>
-      <p><strong>Preço:</strong> R$ 30,00</p>
-      <p><strong>Descrição:</strong> Primeira edição da série lançada no Brasil pela Abril. Raro!</p>
-      <p><strong>Contato:</strong> Instagram: @meusgibis</p>
-    </div>
-  </div>
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const lista = document.getElementById("lista");
+      lista.innerHTML = "";
+      data.forEach(item => {
+        let fotos = "";
+        for (let i = 1; i <= 5; i++) {
+          const link = item[`Foto${i}`];
+          if (link) {
+            fotos += `<img src="${link}" alt="Foto ${i} de ${item.Nome}">`;
+          }
+        }
 
-  <div class="gibi">
-    <img src="https://upload.wikimedia.org/wikipedia/pt/e/e8/GibiXmen.jpg" alt="X-Men #50">
-    <div class="info">
-      <h2>X-Men #50 (Panini)</h2>
-      <p><strong>Estado:</strong> Ótimo</p>
-      <p><strong>Preço:</strong> R$ 20,00</p>
-      <p><strong>Descrição:</strong> Edição especial com histórias dos anos 90. Papel em ótimo estado.</p>
-      <p><strong>Contato:</strong> me chame no direct ou inbox!</p>
-    </div>
-  </div>
-
-  <footer>
-    Página criada com ❤️ usando GitHub Pages.
-  </footer>
+        lista.innerHTML += `
+          <div class="item">
+            <h2>${item.Nome}</h2>
+            <p><strong>Preço:</strong> R$ ${item.Preço}</p>
+            <p>${item.Descrição}</p>
+            <div class="fotos">${fotos}</div>
+          </div>
+        `;
+      });
+    })
+    .catch(err => {
+      document.getElementById("lista").innerText = "Erro ao carregar os dados.";
+      console.error(err);
+    });
+</script>
 
 </body>
 </html>
