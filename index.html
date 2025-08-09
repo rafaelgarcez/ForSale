@@ -10,12 +10,56 @@
       background: #f2f4f8;
       margin: 0;
       padding: 0;
+      scroll-behavior: smooth; /* rolagem suave */
     }
-  
+
+    header {
+      background: white;
+      padding: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #2c3e50;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      background: #ff6f00;
+      color: white;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      margin: 0 5px;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: #e65c00;
+    }
+
     main {
       max-width: 1000px;
       margin: auto;
       padding: 30px 20px;
+    }
+
+    h2.categoria {
+      font-size: 1.8em;
+      color: #d35400;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+      text-align: center;
     }
 
     .item {
@@ -28,7 +72,7 @@
       text-align: center;
     }  
 
-    .item h2 {
+    .item h3 {
       margin-top: 0;
       font-size: 1.5em;
       color: #2c3e50;
@@ -37,10 +81,6 @@
     .item p {
       margin: 5px 0;
       color: #444;
-    }
-
-    .item p strong {
-      color: #000;
     }
 
     .fotos {
@@ -70,21 +110,28 @@
       font-size: 0.9em;
       color: #999;
     }
-
-    @media (max-width: 600px) {
-      .fotos {
-        justify-content: center;
-      }
-      .fotos a img {
-        max-width: 100px;
-      }
-    }
   </style>
 </head>
 <body>
 
+<header>
+  
+  <nav>
+    <a href="#gibis">📚 HQs e mangás</a>
+    <a href="#games">🎮 Games</a>
+  </nav>
+</header>
+
 <main>
-  <div id="lista">Carregando...</div>
+  <section id="gibis">
+    <h2 class="categoria">📚 HQs e mangás</h2>
+    <div id="lista-gibis">Carregando...</div>
+  </section>
+
+  <section id="games">
+    <h2 class="categoria">🎮 Games</h2>
+    <div id="lista-games">Carregando...</div>
+  </section>
 </main>
 
 <footer>
@@ -93,40 +140,47 @@
 
 <script>
   const planilhaID = "1GiwMWyQPWlzYZi870fIm9OMM9ASpaMOemFodHdDCuAk";
-  const url = `https://opensheet.elk.sh/${planilhaID}/1`;
 
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      const lista = document.getElementById("lista");
-      lista.innerHTML = "";
-      data.forEach(item => {
-        let fotos = "";
-        for (let i = 1; i <= 7; i++) {
-          const link = item[`Foto${i}`];
-          if (link) {
-            fotos += `
-              <a href="${link}" target="_blank" rel="noopener noreferrer">
-                <img src="${link}" alt="Foto ${i} de ${item.Nome}">
-              </a>
-            `;
+  function carregarLista(aba, destino) {
+    const url = `https://opensheet.elk.sh/${planilhaID}/${aba}`;
+    const container = document.getElementById(destino);
+    container.innerHTML = "Carregando...";
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        container.innerHTML = "";
+        data.forEach(item => {
+          let fotos = "";
+          for (let i = 1; i <= 7; i++) {
+            const link = item[`Foto${i}`];
+            if (link) {
+              fotos += `
+                <a href="${link}" target="_blank" rel="noopener noreferrer">
+                  <img src="${link}" alt="Foto ${i} de ${item.Nome}">
+                </a>
+              `;
+            }
           }
-        }
-
-        lista.innerHTML += `
-          <div class="item">
-            <h2>${item.Nome}</h2>
-            <p><strong>Preço:</strong> R$ ${item.Preço}</p>
-            <p>${item.Descrição}</p>
-            <div class="fotos">${fotos}</div>
-          </div>
-        `;
+          container.innerHTML += `
+            <div class="item">
+              <h3>${item.Nome}</h3>
+              <p><strong>Preço:</strong> R$ ${item.Preço}</p>
+              <p>${item.Descrição}</p>
+              <div class="fotos">${fotos}</div>
+            </div>
+          `;
+        });
+      })
+      .catch(err => {
+        container.innerText = "Erro ao carregar os dados.";
+        console.error(err);
       });
-    })
-    .catch(err => {
-      document.getElementById("lista").innerText = "Erro ao carregar os dados.";
-      console.error(err);
-    });
+  }
+
+  // Carrega as duas categorias
+  carregarLista(1, "lista-gibis"); // Aba 1 = Gibis
+  carregarLista(2, "lista-games"); // Aba 2 = Games
 </script>
 
 </body>
