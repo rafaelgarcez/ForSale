@@ -115,10 +115,10 @@
 <body>
 
 <header>
-  
   <nav>
     <a href="#gibis">📚 HQs e mangás</a>
     <a href="#games">🎮 Games</a>
+    <a href="#boardgames">🎲 Board Games</a>
   </nav>
 </header>
 
@@ -131,6 +131,11 @@
   <section id="games">
     <h2 class="categoria">🎮 Games</h2>
     <div id="lista-games">Carregando...</div>
+  </section>
+
+  <section id="boardgames">
+    <h2 class="categoria">🎲 Board Games</h2>
+    <div id="lista-boardgames">Carregando...</div>
   </section>
 </main>
 
@@ -178,9 +183,10 @@
       });
   }
 
-  // Carrega as duas categorias
-  carregarLista(1, "lista-gibis"); // Aba 1 = Gibis
-  carregarLista(2, "lista-games"); // Aba 2 = Games
+  // Carrega as três categorias
+  carregarLista(1, "lista-gibis");        // Aba 1 = HQs e Mangás
+  carregarLista(2, "lista-games");        // Aba 2 = Games
+  carregarLista(3, "lista-boardgames");   // Aba 3 = Board Games
 </script>
 
 </body>
